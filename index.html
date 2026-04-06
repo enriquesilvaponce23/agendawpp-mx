@@ -1,0 +1,1565 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agendawpp MX — Tus clientes agendan solos por WhatsApp</title>
+  <meta name="description" content="Sistema de agendamiento por WhatsApp Flows. Tus clientes reservan citas desde un formulario dentro de WhatsApp, sincronizado con Google Calendar. Sin apps, sin bots.">
+  <meta property="og:title" content="Agendawpp MX — Tus clientes agendan solos por WhatsApp">
+  <meta property="og:description" content="Formularios de agendamiento dentro de WhatsApp. Sincronizado con Google Calendar. Recordatorios automaticos. Sin bots, sin apps externas.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://agendawpp.mx">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --green: #25D366;
+      --green-dark: #1da851;
+      --green-subtle: rgba(37, 211, 102, 0.1);
+      --green-border: rgba(37, 211, 102, 0.2);
+      --bg: #0a0a0a;
+      --bg-card: #141414;
+      --bg-card-hover: #1a1a1a;
+      --text: #ffffff;
+      --text-muted: #a0a0a0;
+      --text-dim: #666666;
+      --border: #222222;
+      --max-width: 680px;
+      --red: #e74c3c;
+      --blue: #2D9CDB;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== LAYOUT ===== */
+    .section {
+      padding: 4rem 1.5rem;
+    }
+
+    .section-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--green);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 1rem;
+    }
+
+    .section-subtitle {
+      font-size: 1rem;
+      color: var(--text-muted);
+      margin-bottom: 2.5rem;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      padding: 3rem 1.5rem 3.5rem;
+      text-align: center;
+    }
+
+    .hero-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero .logo {
+      width: 80px;
+      height: 80px;
+      border-radius: 18px;
+      object-fit: contain;
+      margin-bottom: 1.5rem;
+      filter: drop-shadow(0 0 24px rgba(37, 211, 102, 0.2));
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--green);
+      background: var(--green-subtle);
+      border: 1px solid var(--green-border);
+      border-radius: 100px;
+      padding: 0.35rem 0.85rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .hero h1 .highlight {
+      color: var(--green);
+    }
+
+    .hero-sub {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      max-width: 540px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--green);
+      color: #fff;
+      text-decoration: none;
+      font-size: 1.05rem;
+      font-weight: 600;
+      padding: 0.95rem 1.75rem;
+      border-radius: 12px;
+      transition: background 0.2s, transform 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .cta-btn:hover {
+      background: var(--green-dark);
+    }
+
+    .cta-btn:active {
+      transform: scale(0.97);
+    }
+
+    .hero-proof {
+      margin-top: 1.25rem;
+      font-size: 0.8rem;
+      color: var(--text-dim);
+    }
+
+    /* ===== NOT A BOT BADGE ===== */
+    .not-bot {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-top: 1.5rem;
+      padding: 0.5rem 0.85rem;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .not-bot strong {
+      color: var(--text);
+    }
+
+    /* ===== PAIN POINTS ===== */
+    .pain {
+      background: var(--bg-card);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .pain-grid {
+      display: grid;
+      gap: 1.25rem;
+    }
+
+    .pain-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.85rem;
+      padding: 1rem;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+    }
+
+    .pain-icon {
+      flex-shrink: 0;
+      font-size: 1.5rem;
+      line-height: 1;
+      margin-top: 0.1rem;
+    }
+
+    .pain-card h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .pain-card p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* ===== HOW IT WORKS ===== */
+    .steps {
+      display: grid;
+      gap: 2rem;
+    }
+
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .step-number {
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: var(--green-subtle);
+      border: 1px solid var(--green-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--green);
+    }
+
+    .step h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .step p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .step .tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      margin-top: 0.5rem;
+    }
+
+    .tag-meta {
+      background: rgba(45, 156, 219, 0.1);
+      color: var(--blue);
+      border: 1px solid rgba(45, 156, 219, 0.2);
+    }
+
+    .tag-gcal {
+      background: rgba(66, 133, 244, 0.1);
+      color: #4285F4;
+      border: 1px solid rgba(66, 133, 244, 0.2);
+    }
+
+    /* ===== BEFORE / AFTER ===== */
+    .compare {
+      background: var(--bg-card);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .compare-grid {
+      display: grid;
+      gap: 1.25rem;
+    }
+
+    .compare-col {
+      border-radius: 12px;
+      padding: 1.25rem;
+      border: 1px solid var(--border);
+    }
+
+    .compare-col.before {
+      background: rgba(231, 76, 60, 0.04);
+      border-color: rgba(231, 76, 60, 0.15);
+    }
+
+    .compare-col.after {
+      background: rgba(37, 211, 102, 0.04);
+      border-color: rgba(37, 211, 102, 0.15);
+    }
+
+    .compare-header {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .compare-col.before .compare-header {
+      color: var(--red);
+    }
+
+    .compare-col.after .compare-header {
+      color: var(--green);
+    }
+
+    .compare-list {
+      list-style: none;
+      display: grid;
+      gap: 0.6rem;
+    }
+
+    .compare-list li {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .compare-list li span:first-child {
+      flex-shrink: 0;
+    }
+
+    /* ===== BENEFITS ===== */
+    .benefits-grid {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    .benefit {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .benefit-icon {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: var(--green-subtle);
+      border: 1px solid var(--green-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+
+    .benefit h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+    }
+
+    .benefit p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* ===== STATS ===== */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .proof-stat {
+      text-align: center;
+      padding: 1.25rem 0.75rem;
+      border-radius: 12px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+    }
+
+    .proof-stat .number {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--green);
+      line-height: 1;
+      margin-bottom: 0.25rem;
+    }
+
+    .proof-stat .label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* ===== NICHES ===== */
+    .niche-section {
+      text-align: center;
+    }
+
+    .niche-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.6rem;
+      max-width: 420px;
+      margin: 0 auto 1.5rem;
+    }
+
+    .niche-tag {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      padding: 0.6rem 0.75rem;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+    }
+
+    .niche-more {
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      margin-bottom: 2.5rem;
+    }
+
+    /* ===== DEMO CTA ===== */
+    .demo-section {
+      background: var(--bg-card);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .demo-box {
+      max-width: 440px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(37, 211, 102, 0.06) 0%, rgba(37, 211, 102, 0.02) 100%);
+      border: 1px solid var(--green-border);
+    }
+
+    .demo-box h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .demo-box p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .demo-steps {
+      display: grid;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      text-align: left;
+    }
+
+    .demo-step {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .demo-step-num {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--green-subtle);
+      color: var(--green);
+      font-size: 0.7rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .demo-note {
+      margin-top: 1rem;
+      font-size: 0.75rem;
+      color: var(--text-dim);
+    }
+
+    /* ===== FAQ ===== */
+    .faq-list {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .faq-item {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .faq-question {
+      width: 100%;
+      background: var(--bg-card);
+      border: none;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-align: left;
+      padding: 1rem 1.25rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .faq-question:hover {
+      background: var(--bg-card-hover);
+    }
+
+    .faq-chevron {
+      flex-shrink: 0;
+      transition: transform 0.2s;
+      color: var(--text-dim);
+    }
+
+    .faq-item.open .faq-chevron {
+      transform: rotate(180deg);
+    }
+
+    .faq-answer {
+      display: none;
+      padding: 0 1.25rem 1rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      background: var(--bg-card);
+    }
+
+    .faq-item.open .faq-answer {
+      display: block;
+    }
+
+    /* ===== FINAL CTA ===== */
+    .final-cta {
+      text-align: center;
+      background: linear-gradient(180deg, var(--bg) 0%, rgba(37, 211, 102, 0.05) 100%);
+    }
+
+    .final-cta h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+
+    .final-cta p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 2rem;
+      max-width: 460px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .final-cta .cta-btn {
+      font-size: 1.1rem;
+      padding: 1rem 2rem;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      text-align: center;
+      padding: 2rem 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer p {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+    }
+
+    /* ===== FLOATING CTA (MOBILE) ===== */
+    .floating-cta {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 0.75rem 1rem;
+      background: rgba(10, 10, 10, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid var(--border);
+      z-index: 100;
+    }
+
+    .floating-cta.visible {
+      display: block;
+    }
+
+    .floating-cta a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: 100%;
+      background: var(--green);
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 0.85rem;
+      border-radius: 10px;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body.has-floating-cta {
+      padding-bottom: 72px;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (min-width: 640px) {
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .section-title {
+        font-size: 2rem;
+      }
+
+      .pain-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .benefits-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .compare-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .niche-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .phone-mockups {
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 1rem;
+        align-items: start;
+      }
+
+      .phone-mockups .phone,
+      .phone-mockups .wa-flow {
+        max-width: 280px;
+      }
+    }
+
+    /* ===== PHONE MOCKUPS ===== */
+    .phone-mockups {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+
+    .phone {
+      background: #111b21;
+      border-radius: 24px;
+      border: 2px solid #2a2a2a;
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+      max-width: 320px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* Status bar */
+    .phone-statusbar {
+      background: #1f2c34;
+      padding: 0.3rem 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.6rem;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    .phone-header {
+      background: #1f2c34;
+      padding: 0.5rem 0.75rem 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .phone-header .back-arrow {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 0.8rem;
+    }
+
+    .phone-header .avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #25D366, #128C7E);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .phone-header .name {
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .phone-header .status {
+      font-size: 0.6rem;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .phone-header .verified {
+      color: #53bdeb;
+      font-size: 0.6rem;
+    }
+
+    .phone-body {
+      padding: 0.65rem;
+      min-height: 240px;
+      background: #0b141a;
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.015'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    /* WhatsApp message bubbles */
+    .wa-msg {
+      max-width: 82%;
+      padding: 0.45rem 0.6rem;
+      border-radius: 8px;
+      font-size: 0.73rem;
+      line-height: 1.45;
+      margin-bottom: 0.35rem;
+      position: relative;
+    }
+
+    .wa-msg.received {
+      background: #1f2c34;
+      border-top-left-radius: 2px;
+    }
+
+    .wa-msg.sent {
+      background: #005c4b;
+      border-top-right-radius: 2px;
+      margin-left: auto;
+    }
+
+    .wa-msg .time {
+      font-size: 0.55rem;
+      color: rgba(255, 255, 255, 0.35);
+      text-align: right;
+      margin-top: 0.2rem;
+    }
+
+    .wa-msg .check {
+      color: #53bdeb;
+      font-size: 0.55rem;
+    }
+
+    /* WhatsApp interactive buttons */
+    .wa-buttons {
+      display: grid;
+      gap: 0.25rem;
+      max-width: 82%;
+      margin-top: 0.25rem;
+    }
+
+    .wa-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.3rem;
+      padding: 0.5rem;
+      border-radius: 8px;
+      background: #1f2c34;
+      border: 1px solid #2a3942;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #53bdeb;
+      text-align: center;
+    }
+
+    .wa-btn.primary {
+      background: #005c4b;
+      border-color: #006d5b;
+      color: #fff;
+    }
+
+    /* WhatsApp Flow form mockup */
+    .wa-flow {
+      background: #111b21;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid #2a3942;
+      max-width: 320px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .wa-flow-top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.6rem 0.75rem;
+      border-bottom: 1px solid #2a3942;
+    }
+
+    .wa-flow-top-bar .close-x {
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.6);
+      cursor: default;
+    }
+
+    .wa-flow-top-bar .flow-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .wa-flow-banner {
+      background: linear-gradient(135deg, #128C7E, #075e54);
+      padding: 1.25rem 1rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .wa-flow-banner .customizable-tag {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      font-size: 0.55rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      background: var(--green);
+      color: #fff;
+      padding: 0.15rem 0.4rem;
+      border-radius: 3px;
+    }
+
+    .wa-flow-banner .logo-placeholder {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 0.15rem;
+    }
+
+    .wa-flow-banner .logo-size {
+      font-size: 0.6rem;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .wa-flow-content {
+      padding: 1rem 0.85rem;
+    }
+
+    .wa-flow-greeting {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 0.15rem;
+    }
+
+    .wa-flow-greeting-sub {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .wa-flow-field {
+      margin-bottom: 0.65rem;
+    }
+
+    .wa-flow-field label {
+      display: block;
+      font-size: 0.6rem;
+      font-weight: 600;
+      color: var(--text-dim);
+      margin-bottom: 0.25rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .wa-flow-field .field-input {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.55rem 0.65rem;
+      border: 1px solid #2a3942;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .wa-flow-field .field-input .clear-icon {
+      color: var(--text-dim);
+      font-size: 0.7rem;
+    }
+
+    .wa-flow-available {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.7rem;
+      color: var(--green);
+      margin: 0.75rem 0;
+    }
+
+    .wa-flow-available .check-circle {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--green);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.55rem;
+      color: #fff;
+    }
+
+    .wa-flow-submit-btn {
+      width: 100%;
+      padding: 0.7rem;
+      background: var(--green);
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-top: 0.35rem;
+      cursor: default;
+    }
+
+    /* Reminder mockup extras */
+    .wa-reminder-box {
+      background: rgba(37, 211, 102, 0.08);
+      border-left: 3px solid var(--green);
+      padding: 0.3rem 0.45rem;
+      border-radius: 0 4px 4px 0;
+      margin-bottom: 0.3rem;
+      font-size: 0.6rem;
+      font-weight: 600;
+      color: var(--green);
+    }
+
+    .phone-caption {
+      text-align: center;
+      padding: 0.65rem 0.75rem;
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      font-weight: 500;
+      background: rgba(255, 255, 255, 0.02);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    /* Mockup section label */
+    .mockup-label {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero" id="hero">
+    <div class="hero-inner">
+      <img src="logo.png" alt="Agendawpp" class="logo">
+      <div class="hero-badge">🇲🇽 Disponible en Mexico</div>
+      <h1>Tus clientes agendan solos.<br><span class="highlight">Directo en WhatsApp.</span></h1>
+      <p class="hero-sub">Un formulario dentro de WhatsApp donde tus clientes eligen servicio, fecha y hora. Sincronizado con Google Calendar. Sin bots, sin apps externas.</p>
+      <a href="#demo" class="cta-btn" id="hero-cta-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Ver demo en WhatsApp
+      </a>
+      <p class="hero-proof">Tarda 1 minuto. Sin registros. Sin compromisos.</p>
+      <div class="not-bot">
+        <span>🚫🤖</span>
+        <span><strong>No es un bot.</strong> Usa WhatsApp Flows™ — formularios oficiales de Meta.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PAIN POINTS ===== -->
+  <section class="section pain">
+    <div class="section-inner">
+      <p class="section-label">El problema</p>
+      <h2 class="section-title">Gestionar citas por WhatsApp es un trabajo de tiempo completo</h2>
+      <p class="section-subtitle">Si tu negocio depende de citas, esto te suena familiar:</p>
+
+      <div class="pain-grid">
+        <div class="pain-card">
+          <span class="pain-icon">📱</span>
+          <div>
+            <h3>"Hola, tienes disponible?"</h3>
+            <p>Recibes el mensaje, checas tu agenda, mandas opciones, esperas respuesta, confirmas... 10 mensajes para una cita.</p>
+          </div>
+        </div>
+        <div class="pain-card">
+          <span class="pain-icon">🕐</span>
+          <div>
+            <h3>Contestas tarde y pierdes</h3>
+            <p>Un cliente te escribe mientras atiendes a otro. Cuando respondes, ya reservo con alguien mas.</p>
+          </div>
+        </div>
+        <div class="pain-card">
+          <span class="pain-icon">🌙</span>
+          <div>
+            <h3>De noche nadie contesta</h3>
+            <p>Muchas solicitudes llegan fuera de horario. Si no hay quien responda, se pierden.</p>
+          </div>
+        </div>
+        <div class="pain-card">
+          <span class="pain-icon">👻</span>
+          <div>
+            <h3>Citas fantasma</h3>
+            <p>Clientes que agendan y no llegan. Sin recordatorios, los no-shows se comen tus horarios.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== HOW IT WORKS ===== -->
+  <section class="section">
+    <div class="section-inner">
+      <p class="section-label">Como funciona</p>
+      <h2 class="section-title">Tu cliente agenda en 3 toques. Sin escribir nada.</h2>
+      <p class="section-subtitle">Todo pasa dentro de WhatsApp. Sin salir de la app. Sin descargar nada.</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div>
+            <h3>Tu cliente abre tu link</h3>
+            <p>Compartes un link en tu Instagram, redes o tarjeta. El cliente hace clic y se abre WhatsApp automaticamente con tu codigo cargado.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <div>
+            <h3>Elige servicio, fecha y hora en un formulario visual</h3>
+            <p>Se abre un formulario nativo dentro de WhatsApp (WhatsApp Flows™). El cliente selecciona con dropdowns: servicio, profesional, fecha y horario disponible. Sin escribir, sin esperar respuesta.</p>
+            <span class="tag tag-meta">WhatsApp Flows™ &mdash; Infraestructura oficial de Meta</span>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div>
+            <h3>La cita aparece en tu Google Calendar</h3>
+            <p>La reserva se sincroniza en tiempo real con tu calendario. El horario se bloquea al instante. El sistema envia recordatorios automaticos 24h y 2h antes.</p>
+            <span class="tag tag-gcal">Sync bidireccional con Google Calendar</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phone mockups: 3 pasos -->
+      <div class="phone-mockups">
+
+        <!-- PASO 1: Enlace Inteligente -->
+        <div>
+          <div class="phone">
+            <div class="phone-statusbar">
+              <span>9:41</span>
+              <span>●●● WiFi 🔋</span>
+            </div>
+            <div class="phone-header">
+              <span class="back-arrow">‹</span>
+              <div class="avatar">A</div>
+              <div>
+                <div class="name">AgendaWPP <span class="verified">✓</span></div>
+                <div class="status">en linea</div>
+              </div>
+            </div>
+            <div class="phone-body">
+              <div class="wa-msg sent">
+                agendawpp
+                <div class="time">17:48 <span class="check">✓✓</span></div>
+              </div>
+              <div class="wa-msg received">
+                ✅ Codigo valido!
+                <div class="time">17:48</div>
+              </div>
+              <div class="wa-msg received">
+                ✏️ <strong>Para seguir, por favor dime tu nombre.</strong><br><br>Lo usaremos para registrar tu cita. 📋
+                <div class="time">17:49</div>
+              </div>
+              <div class="wa-msg sent">
+                Juan Perez
+                <div class="time">17:49 <span class="check">✓✓</span></div>
+              </div>
+            </div>
+            <div class="phone-caption">Paso 1 — Tu cliente envia el codigo y listo</div>
+          </div>
+        </div>
+
+        <!-- PASO 2: Menu Rapido -->
+        <div>
+          <div class="phone">
+            <div class="phone-statusbar">
+              <span>9:41</span>
+              <span>●●● WiFi 🔋</span>
+            </div>
+            <div class="phone-header">
+              <span class="back-arrow">‹</span>
+              <div class="avatar">A</div>
+              <div>
+                <div class="name">AgendaWPP <span class="verified">✓</span></div>
+                <div class="status">en linea</div>
+              </div>
+            </div>
+            <div class="phone-body">
+              <div class="wa-msg received">
+                <strong>Hola 👋 Juan</strong><br><br>
+                Gracias por visitar:<br>
+                | AgendaWPP<br><br>
+                <em>Elija una opcion para continuar:</em>
+                <div class="time">12:32 a.m.</div>
+              </div>
+              <div class="wa-buttons">
+                <div class="wa-btn primary">AGENDAR AHORA 📅</div>
+                <div class="wa-btn">REAGENDAR CITA 🔄</div>
+                <div class="wa-btn">CANCELAR CITA 🚫</div>
+              </div>
+              <div style="height: 0.5rem;"></div>
+              <div class="wa-msg received">
+                📋 <strong>Agenda tu cita</strong><br>
+                Elige servicio y horario.<br>
+                👉 Tocar para continuar
+                <div class="time">12:32 a.m.</div>
+              </div>
+              <div class="wa-buttons">
+                <div class="wa-btn primary" style="border-radius: 20px;">Agendar Ahora</div>
+              </div>
+            </div>
+            <div class="phone-caption">Paso 2 — Botones interactivos, sin escribir comandos</div>
+          </div>
+        </div>
+
+        <!-- PASO 3: Reserva Visual (WhatsApp Flow) -->
+        <div>
+          <div class="wa-flow">
+            <div class="wa-flow-top-bar">
+              <span class="close-x">✕</span>
+              <span class="flow-title">Agendar Cita</span>
+              <span style="width: 16px;"></span>
+            </div>
+            <div class="wa-flow-banner">
+              <div class="customizable-tag">PERSONALIZABLE</div>
+              <div class="logo-placeholder">TU LOGO</div>
+              <div class="logo-size">800 × 418 px</div>
+            </div>
+            <div class="wa-flow-content">
+              <div class="wa-flow-greeting">Agenda tu cita</div>
+              <div class="wa-flow-greeting-sub">Hola, Jose 👋</div>
+
+              <div class="wa-flow-field">
+                <label>Servicio</label>
+                <div class="field-input">
+                  <span>AGENDAMIENTO AUTOMATICO</span>
+                  <span class="clear-icon">⊗</span>
+                </div>
+              </div>
+              <div class="wa-flow-field">
+                <label>Profesional</label>
+                <div class="field-input">
+                  <span>⇄ Cualquier Profesional</span>
+                  <span class="clear-icon">⊗</span>
+                </div>
+              </div>
+              <div class="wa-flow-field">
+                <label>Fecha</label>
+                <div class="field-input">
+                  <span>Sincronizado con Google Calendario</span>
+                  <span class="clear-icon">⊗</span>
+                </div>
+              </div>
+              <div class="wa-flow-field">
+                <label>Horario</label>
+                <div class="field-input">
+                  <span>15:00</span>
+                  <span class="clear-icon">⊗</span>
+                </div>
+              </div>
+
+              <div class="wa-flow-available">
+                <span class="check-circle">✓</span>
+                <span>Tenemos 8 horarios disponibles.</span>
+              </div>
+
+              <div class="wa-flow-submit-btn">Continuar</div>
+            </div>
+          </div>
+          <div class="phone-caption" style="background: none; border: none; margin-top: 0.5rem;">Paso 3 — Formulario visual dentro de WhatsApp</div>
+        </div>
+
+      </div>
+
+      <p style="text-align: center; font-size: 0.78rem; color: var(--text-dim); margin-top: 1.5rem;">Asi lo ve tu cliente: una interfaz nativa de WhatsApp Flows con tu logo y marca.</p>
+
+    </div>
+  </section>
+
+  <!-- ===== BEFORE / AFTER ===== -->
+  <section class="section compare">
+    <div class="section-inner">
+      <p class="section-label">Antes vs. Despues</p>
+      <h2 class="section-title">De 10 mensajes a 0 mensajes por cita</h2>
+
+      <div class="compare-grid">
+        <div class="compare-col before">
+          <div class="compare-header">❌ Sin Agendawpp</div>
+          <ul class="compare-list">
+            <li><span>💬</span> <span>"Hola, tienes horario el martes?"</span></li>
+            <li><span>⏳</span> <span>Revisas tu agenda manualmente</span></li>
+            <li><span>💬</span> <span>"Tengo 10am o 2pm, cual te queda?"</span></li>
+            <li><span>⏳</span> <span>Esperas que conteste...</span></li>
+            <li><span>💬</span> <span>"La de 2pm por favor"</span></li>
+            <li><span>📝</span> <span>Anotas en tu agenda a mano</span></li>
+            <li><span>🙏</span> <span>Esperas que no se le olvide llegar</span></li>
+          </ul>
+        </div>
+        <div class="compare-col after">
+          <div class="compare-header">✅ Con Agendawpp</div>
+          <ul class="compare-list">
+            <li><span>📲</span> <span>Cliente abre tu link en WhatsApp</span></li>
+            <li><span>📋</span> <span>Formulario: elige servicio, fecha, hora</span></li>
+            <li><span>✅</span> <span>Cita confirmada en 58 segundos</span></li>
+            <li><span>📅</span> <span>Aparece en tu Google Calendar</span></li>
+            <li><span>🔔</span> <span>Recordatorio 24h antes automatico</span></li>
+            <li><span>🔔</span> <span>Recordatorio 2h antes con boton "Voy en camino"</span></li>
+            <li><span>🚫</span> <span>Si cancela, el horario se libera solo</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BENEFITS ===== -->
+  <section class="section">
+    <div class="section-inner">
+      <p class="section-label">Que incluye</p>
+      <h2 class="section-title">Todo lo que necesitas para dejar de gestionar citas</h2>
+
+      <div class="benefits-grid">
+        <div class="benefit">
+          <div class="benefit-icon">📅</div>
+          <div>
+            <h3>Google Calendar en tiempo real</h3>
+            <p>Sincronizacion bidireccional. Si bloqueas un horario en tu calendario, desaparece del formulario.</p>
+          </div>
+        </div>
+        <div class="benefit">
+          <div class="benefit-icon">🔔</div>
+          <div>
+            <h3>Recordatorios automaticos</h3>
+            <p>24 horas y 2 horas antes. Con botones para confirmar, reagendar o cancelar. Reduce no-shows hasta un 80%.</p>
+          </div>
+        </div>
+        <div class="benefit">
+          <div class="benefit-icon">🕐</div>
+          <div>
+            <h3>Funciona 24/7</h3>
+            <p>El formulario esta disponible siempre. Tus clientes agendan a la hora que quieran, aunque estes dormido.</p>
+          </div>
+        </div>
+        <div class="benefit">
+          <div class="benefit-icon">🎨</div>
+          <div>
+            <h3>Tu marca, tu imagen</h3>
+            <p>Sube tu logo y banner. Personaliza servicios, duraciones y precios. Se ve profesional.</p>
+          </div>
+        </div>
+        <div class="benefit">
+          <div class="benefit-icon">👥</div>
+          <div>
+            <h3>Varios profesionales</h3>
+            <p>Cada miembro del equipo tiene su propio calendario. Los clientes eligen con quien agendar.</p>
+          </div>
+        </div>
+        <div class="benefit">
+          <div class="benefit-icon">🔒</div>
+          <div>
+            <h3>API oficial de Meta</h3>
+            <p>Usa la infraestructura oficial de WhatsApp Business. Cero riesgo de bloqueo. Numero verificado.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STATS ===== -->
+  <section class="section" style="background: var(--bg-card); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+    <div class="section-inner" style="text-align: center;">
+      <p class="section-label">Resultados</p>
+      <h2 class="section-title">Menos trabajo. Mas citas. Cero no-shows.</h2>
+
+      <div class="stats-row">
+        <div class="proof-stat">
+          <div class="number">58s</div>
+          <div class="label">Tiempo promedio para agendar</div>
+        </div>
+        <div class="proof-stat">
+          <div class="number">80%</div>
+          <div class="label">Menos no-shows</div>
+        </div>
+        <div class="proof-stat">
+          <div class="number">24/7</div>
+          <div class="label">Disponibilidad</div>
+        </div>
+      </div>
+
+      <p style="font-size: 0.85rem; color: var(--text-muted); max-width: 460px; margin: 0 auto;">Mas rapido que cualquier chatbot o IA. Un formulario visual donde el cliente selecciona en lugar de escribir.</p>
+    </div>
+  </section>
+
+  <!-- ===== NICHES ===== -->
+  <section class="section niche-section">
+    <div class="section-inner">
+      <p class="section-label">Para quien es</p>
+      <h2 class="section-title">Para cualquier profesional que venda su tiempo</h2>
+      <p class="section-subtitle">Si tus clientes te escriben por WhatsApp para agendar, es para ti.</p>
+
+      <div class="niche-grid">
+        <div class="niche-tag">🩺 Doctores</div>
+        <div class="niche-tag">🦷 Dentistas</div>
+        <div class="niche-tag">💈 Barberias</div>
+        <div class="niche-tag">💇‍♀️ Salones</div>
+        <div class="niche-tag">🥗 Nutriologos</div>
+        <div class="niche-tag">🧠 Psicologos</div>
+        <div class="niche-tag">🐾 Veterinarias</div>
+        <div class="niche-tag">💆 Spas</div>
+        <div class="niche-tag">📚 Tutores</div>
+        <div class="niche-tag">💼 Consultores</div>
+        <div class="niche-tag">⚖️ Abogados</div>
+        <div class="niche-tag">🎨 Tatuadores</div>
+      </div>
+      <p class="niche-more">Y cualquier negocio que trabaje con citas</p>
+    </div>
+  </section>
+
+  <!-- ===== DEMO CTA ===== -->
+  <section class="section demo-section" id="demo">
+    <div class="section-inner">
+      <p class="section-label">Prueba en vivo</p>
+      <h2 class="section-title">Vive la experiencia que tendrian tus clientes</h2>
+      <p class="section-subtitle">Prueba el sistema real. Agenda una cita ficticia en WhatsApp y ve como funciona.</p>
+
+      <div class="demo-box">
+        <h3>Demo en vivo por WhatsApp</h3>
+        <p>Vas a experimentar exactamente lo que verian tus clientes al agendar contigo.</p>
+
+        <div class="demo-steps">
+          <div class="demo-step">
+            <span class="demo-step-num">1</span>
+            <span>Haz clic en el boton de abajo</span>
+          </div>
+          <div class="demo-step">
+            <span class="demo-step-num">2</span>
+            <span>Se abre WhatsApp con el codigo cargado — solo envia el mensaje</span>
+          </div>
+          <div class="demo-step">
+            <span class="demo-step-num">3</span>
+            <span>Sigue las instrucciones y agenda una cita de prueba</span>
+          </div>
+        </div>
+
+        <a href="https://wa.me/5216145993425?text=AGENDAWPP" class="cta-btn" id="demo-cta-btn" target="_blank" rel="noopener" style="width: 100%; justify-content: center;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Probar demo en WhatsApp
+        </a>
+        <p class="demo-note">Se abrira WhatsApp con el codigo de demo cargado. Sin registros. Sin compromisos.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FAQ ===== -->
+  <section class="section">
+    <div class="section-inner">
+      <p class="section-label">Preguntas frecuentes</p>
+      <h2 class="section-title">Dudas comunes</h2>
+
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Es un bot o un chatbot?</span>
+            <svg class="faq-chevron" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M4.427 5.427a.75.75 0 011.146 0L8 7.854l2.427-2.427a.75.75 0 111.146.966l-3 3a.75.75 0 01-1.146 0l-3-3a.75.75 0 010-.966z"/></svg>
+          </button>
+          <div class="faq-answer">No. Agendawpp usa WhatsApp Flows™, la tecnologia oficial de formularios de Meta. En lugar de una conversacion con un bot, tus clientes ven un formulario visual donde seleccionan servicio, fecha y hora con dropdowns. Es mas rapido y sin errores de interpretacion.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Se sincroniza con mi calendario?</span>
+            <svg class="faq-chevron" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M4.427 5.427a.75.75 0 011.146 0L8 7.854l2.427-2.427a.75.75 0 111.146.966l-3 3a.75.75 0 01-1.146 0l-3-3a.75.75 0 010-.966z"/></svg>
+          </button>
+          <div class="faq-answer">Si. La integracion con Google Calendar es bidireccional y en tiempo real. Si bloqueas un horario en tu calendario, desaparece del formulario. Si alguien agenda por WhatsApp, aparece en tu calendario al instante. Cero riesgo de empalmes.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Mis clientes necesitan descargar algo?</span>
+            <svg class="faq-chevron" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M4.427 5.427a.75.75 0 011.146 0L8 7.854l2.427-2.427a.75.75 0 111.146.966l-3 3a.75.75 0 01-1.146 0l-3-3a.75.75 0 010-.966z"/></svg>
+          </button>
+          <div class="faq-answer">No. Todo funciona dentro de WhatsApp, la app que ya tienen. No necesitan crear cuentas, descargar apps ni visitar paginas externas. Hacen clic en tu link, se abre el formulario en WhatsApp y listo.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Que pasa si dos clientes quieren la misma hora?</span>
+            <svg class="faq-chevron" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M4.427 5.427a.75.75 0 011.146 0L8 7.854l2.427-2.427a.75.75 0 111.146.966l-3 3a.75.75 0 01-1.146 0l-3-3a.75.75 0 010-.966z"/></svg>
+          </button>
+          <div class="faq-answer">El sistema consulta tu Google Calendar en tiempo real cada vez que un cliente abre el formulario y al momento de confirmar. Si alguien toma el horario primero, desaparece para el siguiente. Sin empalmes, automatico.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Puedo personalizar servicios, horarios y duraciones?</span>
+            <svg class="faq-chevron" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M4.427 5.427a.75.75 0 011.146 0L8 7.854l2.427-2.427a.75.75 0 111.146.966l-3 3a.75.75 0 01-1.146 0l-3-3a.75.75 0 010-.966z"/></svg>
+          </button>
+          <div class="faq-answer">Si, totalmente. Desde tu dashboard configuras los servicios que ofreces, sus duraciones, precios, horarios por dia de la semana, descansos e incluso tu logo y banner de marca.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Funciona con mi numero de WhatsApp actual?</span>
+            <svg class="faq-chevron" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M4.427 5.427a.75.75 0 011.146 0L8 7.854l2.427-2.427a.75.75 0 111.146.966l-3 3a.75.75 0 01-1.146 0l-3-3a.75.75 0 010-.966z"/></svg>
+          </button>
+          <div class="faq-answer">Las reservas se hacen en un numero verificado de Agendawpp con la API oficial de Meta. Tu conservas tu WhatsApp personal sin cambios. Esto garantiza cero riesgo de bloqueo y acceso a WhatsApp Flows™, que no esta disponible en cuentas regulares.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Cuanto tiempo toma la configuracion?</span>
+            <svg class="faq-chevron" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M4.427 5.427a.75.75 0 011.146 0L8 7.854l2.427-2.427a.75.75 0 111.146.966l-3 3a.75.75 0 01-1.146 0l-3-3a.75.75 0 010-.966z"/></svg>
+          </button>
+          <div class="faq-answer">Menos de 10 minutos. Conectas tu Google Calendar, configuras servicios y horarios, y compartes tu link. Nosotros te acompanamos en el proceso.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Para que tipo de negocios funciona?</span>
+            <svg class="faq-chevron" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M4.427 5.427a.75.75 0 011.146 0L8 7.854l2.427-2.427a.75.75 0 111.146.966l-3 3a.75.75 0 01-1.146 0l-3-3a.75.75 0 010-.966z"/></svg>
+          </button>
+          <div class="faq-answer">Para cualquier negocio que trabaje con citas: consultorios medicos, barberias, salones de belleza, dentistas, nutriologos, psicologos, veterinarias, spas, tutores, abogados, consultores y mas. Si vendes tu tiempo, es para ti.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FINAL CTA ===== -->
+  <section class="section final-cta">
+    <div class="section-inner">
+      <h2>Deja de gestionar citas a mano</h2>
+      <p>Prueba el demo en WhatsApp. Ve en 1 minuto como tus clientes agendarian solos, sin que tengas que contestar un solo mensaje.</p>
+      <a href="#demo" class="cta-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Ver demo en WhatsApp
+      </a>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <p>&copy; 2026 Agendawpp MX. Hecho para Mexico.</p>
+  </footer>
+
+  <!-- ===== FLOATING CTA (MOBILE) ===== -->
+  <div class="floating-cta" id="floatingCta">
+    <a href="#demo">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Ver demo en WhatsApp
+    </a>
+  </div>
+
+  <script>
+    // ===== FAQ TOGGLE =====
+    document.querySelectorAll('.faq-question').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var item = this.parentElement;
+        var wasOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item').forEach(function(el) {
+          el.classList.remove('open');
+        });
+        if (!wasOpen) item.classList.add('open');
+      });
+    });
+
+    // ===== FLOATING CTA =====
+    var floatingCta = document.getElementById('floatingCta');
+    var heroSection = document.getElementById('hero');
+
+    function checkScroll() {
+      var heroBottom = heroSection.getBoundingClientRect().bottom;
+      if (heroBottom < 0) {
+        floatingCta.classList.add('visible');
+        document.body.classList.add('has-floating-cta');
+      } else {
+        floatingCta.classList.remove('visible');
+        document.body.classList.remove('has-floating-cta');
+      }
+    }
+
+    window.addEventListener('scroll', checkScroll, { passive: true });
+    checkScroll();
+
+    // ===== ANALYTICS EVENTS =====
+    document.querySelectorAll('.cta-btn, .floating-cta a').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        if (typeof gtag === 'function') {
+          gtag('event', 'demo_click', {
+            event_category: 'engagement',
+            event_label: this.id || 'cta'
+          });
+        }
+        if (typeof fbq === 'function') {
+          fbq('track', 'Lead', { content_name: 'demo_whatsapp' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>

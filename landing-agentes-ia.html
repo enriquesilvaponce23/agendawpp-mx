@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AgendaFlow — Tus clientes agendan solos por WhatsApp</title>
+  <meta name="description" content="Deja de perder citas por no contestar a tiempo. Con AgendaFlow, tus clientes reservan solos por WhatsApp, 24/7. Sin apps, sin páginas externas. Prueba el demo gratis.">
+  <meta property="og:title" content="AgendaFlow — Tus clientes agendan solos por WhatsApp">
+  <meta property="og:description" content="Deja de perder citas por no contestar a tiempo. Tus clientes reservan solos por WhatsApp, 24/7.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://agendawpp.mx">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --green: #25D366;
+      --green-dark: #1da851;
+      --bg: #0a0a0a;
+      --bg-card: #141414;
+      --bg-card-hover: #1a1a1a;
+      --text: #ffffff;
+      --text-muted: #a0a0a0;
+      --text-dim: #666666;
+      --border: #222222;
+      --max-width: 680px;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== LAYOUT ===== */
+    .section {
+      padding: 4rem 1.5rem;
+    }
+
+    .section-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--green);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 1rem;
+    }
+
+    .section-subtitle {
+      font-size: 1rem;
+      color: var(--text-muted);
+      margin-bottom: 2.5rem;
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      padding: 3rem 1.5rem 3.5rem;
+      text-align: center;
+    }
+
+    .hero-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero .logo {
+      width: 80px;
+      height: 80px;
+      border-radius: 18px;
+      object-fit: contain;
+      margin-bottom: 1.5rem;
+      filter: drop-shadow(0 0 24px rgba(37, 211, 102, 0.2));
+    }
+
+    .hero-badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--green);
+      background: rgba(37, 211, 102, 0.1);
+      border: 1px solid rgba(37, 211, 102, 0.2);
+      border-radius: 100px;
+      padding: 0.35rem 0.85rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .hero h1 .highlight {
+      color: var(--green);
+    }
+
+    .hero-sub {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--green);
+      color: #fff;
+      text-decoration: none;
+      font-size: 1.05rem;
+      font-weight: 600;
+      padding: 0.95rem 1.75rem;
+      border-radius: 12px;
+      transition: background 0.2s, transform 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .hero-cta:hover {
+      background: var(--green-dark);
+    }
+
+    .hero-cta:active {
+      transform: scale(0.97);
+    }
+
+    .hero-proof {
+      margin-top: 1.25rem;
+      font-size: 0.8rem;
+      color: var(--text-dim);
+    }
+
+    /* ===== PAIN POINTS ===== */
+    .pain {
+      background: var(--bg-card);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .pain-grid {
+      display: grid;
+      gap: 1.25rem;
+    }
+
+    .pain-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.85rem;
+      padding: 1rem;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+    }
+
+    .pain-icon {
+      flex-shrink: 0;
+      font-size: 1.5rem;
+      line-height: 1;
+      margin-top: 0.1rem;
+    }
+
+    .pain-card h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .pain-card p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* ===== HOW IT WORKS ===== */
+    .steps {
+      display: grid;
+      gap: 2rem;
+      counter-reset: step;
+    }
+
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .step-number {
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: rgba(37, 211, 102, 0.1);
+      border: 1px solid rgba(37, 211, 102, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--green);
+    }
+
+    .step h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .step p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    /* ===== BENEFITS ===== */
+    .benefits {
+      background: var(--bg-card);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .benefits-grid {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    .benefit {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .benefit-icon {
+      flex-shrink: 0;
+      color: var(--green);
+      font-size: 1.25rem;
+      line-height: 1;
+      margin-top: 0.15rem;
+    }
+
+    .benefit h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+    }
+
+    .benefit p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* ===== SOCIAL PROOF ===== */
+    .proof-cards {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .proof-card {
+      padding: 1.25rem;
+      border-radius: 12px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+    }
+
+    .proof-card .quote {
+      font-size: 0.9rem;
+      font-style: italic;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+      line-height: 1.5;
+    }
+
+    .proof-card .author {
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .proof-card .role {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+    }
+
+    .proof-stat {
+      text-align: center;
+      padding: 1.5rem 1rem;
+      border-radius: 12px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+    }
+
+    .proof-stat .number {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--green);
+      line-height: 1;
+      margin-bottom: 0.25rem;
+    }
+
+    .proof-stat .label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+    }
+
+    /* ===== NICHE SELECTOR ===== */
+    .niche-section {
+      background: var(--bg-card);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .niche-buttons {
+      display: grid;
+      gap: 0.75rem;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .niche-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      min-height: 52px;
+      padding: 0.85rem 1.25rem;
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      transition: filter 0.2s, transform 0.15s;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .niche-btn:hover {
+      filter: brightness(1.1);
+    }
+
+    .niche-btn:active {
+      transform: scale(0.97);
+    }
+
+    .niche-btn .arrow {
+      color: rgba(255, 255, 255, 0.7);
+      font-weight: 400;
+    }
+
+    .niche-hint {
+      margin-top: 1rem;
+      font-size: 0.8rem;
+      color: var(--text-dim);
+    }
+
+    /* ===== FAQ ===== */
+    .faq-list {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .faq-item {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .faq-question {
+      width: 100%;
+      background: var(--bg-card);
+      border: none;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-align: left;
+      padding: 1rem 1.25rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .faq-question:hover {
+      background: var(--bg-card-hover);
+    }
+
+    .faq-chevron {
+      flex-shrink: 0;
+      transition: transform 0.2s;
+      color: var(--text-dim);
+    }
+
+    .faq-item.open .faq-chevron {
+      transform: rotate(180deg);
+    }
+
+    .faq-answer {
+      display: none;
+      padding: 0 1.25rem 1rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      background: var(--bg-card);
+    }
+
+    .faq-item.open .faq-answer {
+      display: block;
+    }
+
+    /* ===== FINAL CTA ===== */
+    .final-cta {
+      text-align: center;
+      background: linear-gradient(180deg, var(--bg) 0%, rgba(37, 211, 102, 0.05) 100%);
+    }
+
+    .final-cta h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+
+    .final-cta p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 2rem;
+      max-width: 440px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .final-cta .hero-cta {
+      font-size: 1.1rem;
+      padding: 1rem 2rem;
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      text-align: center;
+      padding: 2rem 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer p {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (min-width: 640px) {
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .section-title {
+        font-size: 2rem;
+      }
+
+      .pain-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .benefits-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .proof-cards {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    /* ===== FLOATING CTA (MOBILE) ===== */
+    .floating-cta {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 0.75rem 1rem;
+      background: rgba(10, 10, 10, 0.95);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid var(--border);
+      z-index: 100;
+    }
+
+    .floating-cta.visible {
+      display: block;
+    }
+
+    .floating-cta a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: 100%;
+      background: var(--green);
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 0.85rem;
+      border-radius: 10px;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Add bottom padding when floating CTA is visible */
+    body.has-floating-cta {
+      padding-bottom: 72px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero" id="hero">
+    <div class="hero-inner">
+      <img src="logo.png" alt="AgendaFlow" class="logo">
+      <div class="hero-badge">Disponible en Mexico</div>
+      <h1>Tus clientes te escriben por WhatsApp.<br><span class="highlight">Que agenden solos.</span></h1>
+      <p class="hero-sub">Tu asistente de WhatsApp atiende, agenda y confirma citas por ti. 24 horas, 7 dias. Sin que tengas que contestar.</p>
+      <a href="#prueba" class="hero-cta" id="hero-cta-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Prueba el demo ahora
+      </a>
+      <p class="hero-proof">Gratis. Sin registros. Tarda 1 minuto.</p>
+    </div>
+  </section>
+
+  <!-- ===== PAIN POINTS ===== -->
+  <section class="section pain">
+    <div class="section-inner">
+      <p class="section-label">El problema</p>
+      <h2 class="section-title">Cada mensaje sin contestar es una cita perdida</h2>
+      <p class="section-subtitle">Si tu negocio depende de citas, seguro te pasa esto:</p>
+
+      <div class="pain-grid">
+        <div class="pain-card">
+          <span class="pain-icon">📱</span>
+          <div>
+            <h3>Contestas tarde</h3>
+            <p>Un cliente te escribe mientras atiendes a otro. Cuando respondes, ya agendo con alguien mas.</p>
+          </div>
+        </div>
+        <div class="pain-card">
+          <span class="pain-icon">📋</span>
+          <div>
+            <h3>Agendas a mano</h3>
+            <p>Revisas conversaciones, checas horarios, mandas opciones, confirmas... para una sola cita.</p>
+          </div>
+        </div>
+        <div class="pain-card">
+          <span class="pain-icon">🕐</span>
+          <div>
+            <h3>Fuera de horario pierdes</h3>
+            <p>El 40% de las solicitudes llegan despues de las 8pm. Si no contestas, se van.</p>
+          </div>
+        </div>
+        <div class="pain-card">
+          <span class="pain-icon">😤</span>
+          <div>
+            <h3>No-shows constantes</h3>
+            <p>Clientes que agendan y no llegan. No hay recordatorios automaticos ni confirmaciones previas.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== HOW IT WORKS ===== -->
+  <section class="section">
+    <div class="section-inner">
+      <p class="section-label">Como funciona</p>
+      <h2 class="section-title">Tu asistente de WhatsApp en 3 pasos</h2>
+      <p class="section-subtitle">Sin descargar apps. Sin pedirle nada a tus clientes.</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div>
+            <h3>Tu cliente te escribe por WhatsApp</h3>
+            <p>Como siempre lo hace. Mismo numero, misma app. Sin links raros ni paginas externas.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <div>
+            <h3>El asistente lo atiende al instante</h3>
+            <p>Le muestra tus horarios disponibles, responde preguntas sobre tus servicios y agenda la cita. Todo en la conversacion de WhatsApp.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div>
+            <h3>Tu recibes la cita confirmada</h3>
+            <p>Te llega la notificacion con los datos del cliente, servicio y horario. El sistema envia recordatorios automaticos para reducir no-shows.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BENEFITS ===== -->
+  <section class="section benefits">
+    <div class="section-inner">
+      <p class="section-label">Beneficios</p>
+      <h2 class="section-title">Mas citas. Menos trabajo. Cero esfuerzo.</h2>
+      <p class="section-subtitle">Lo que cambia cuando tu WhatsApp trabaja por ti:</p>
+
+      <div class="benefits-grid">
+        <div class="benefit">
+          <span class="benefit-icon">&#10003;</span>
+          <div>
+            <h3>Atencion 24/7</h3>
+            <p>Tu asistente contesta de dia y de noche. Fines de semana y dias festivos. Nunca pierde un mensaje.</p>
+          </div>
+        </div>
+        <div class="benefit">
+          <span class="benefit-icon">&#10003;</span>
+          <div>
+            <h3>Menos no-shows</h3>
+            <p>Recordatorios automaticos antes de cada cita. Si el cliente cancela, el horario se libera automaticamente.</p>
+          </div>
+        </div>
+        <div class="benefit">
+          <span class="benefit-icon">&#10003;</span>
+          <div>
+            <h3>Cero friccion para el cliente</h3>
+            <p>No tiene que descargar nada, crear cuentas ni visitar paginas. Agenda directo en WhatsApp, la app que ya usa.</p>
+          </div>
+        </div>
+        <div class="benefit">
+          <span class="benefit-icon">&#10003;</span>
+          <div>
+            <h3>Tu controlas todo</h3>
+            <p>Dashboard donde manejas horarios, servicios, duraciones y dias libres. Tu decides, el asistente ejecuta.</p>
+          </div>
+        </div>
+        <div class="benefit">
+          <span class="benefit-icon">&#10003;</span>
+          <div>
+            <h3>Listo en minutos</h3>
+            <p>Sin configuraciones complicadas. Conecta tu WhatsApp Business, configura tus horarios y listo.</p>
+          </div>
+        </div>
+        <div class="benefit">
+          <span class="benefit-icon">&#10003;</span>
+          <div>
+            <h3>Funciona con tu numero actual</h3>
+            <p>No necesitas otro numero ni otra linea. Se integra con tu WhatsApp Business existente.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SOCIAL PROOF / STATS ===== -->
+  <section class="section">
+    <div class="section-inner">
+      <p class="section-label">Resultados</p>
+      <h2 class="section-title">Negocios que ya lo usan</h2>
+      <p class="section-subtitle">Lo que reportan nuestros primeros usuarios:</p>
+
+      <div class="stats-row">
+        <div class="proof-stat">
+          <div class="number">3x</div>
+          <div class="label">Mas citas agendadas</div>
+        </div>
+        <div class="proof-stat">
+          <div class="number">70%</div>
+          <div class="label">Menos no-shows</div>
+        </div>
+        <div class="proof-stat">
+          <div class="number">24/7</div>
+          <div class="label">Atencion continua</div>
+        </div>
+      </div>
+
+      <div class="proof-cards">
+        <div class="proof-card">
+          <p class="quote">"Antes perdia citas porque no podia contestar mientras estaba con un paciente. Ahora el asistente agenda por mi y yo solo reviso mi agenda."</p>
+          <p class="author">Dr. Ricardo A.</p>
+          <p class="role">Consultorio medico, Chihuahua</p>
+        </div>
+        <div class="proof-card">
+          <p class="quote">"Mis clientes me escriben a las 11pm. Antes perdia esas citas. Ahora amanezco con la agenda llena."</p>
+          <p class="author">Carlos M.</p>
+          <p class="role">Barberia, CDMX</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== NICHE SELECTOR (CTA) ===== -->
+  <section class="section niche-section" id="prueba">
+    <div class="section-inner">
+      <p class="section-label">Prueba el demo</p>
+      <h2 class="section-title">Vive la experiencia que tendrian tus clientes</h2>
+      <p class="section-subtitle">Elige tu profesion y prueba como funciona el agendamiento por WhatsApp. Es gratis, tarda 1 minuto.</p>
+
+      <div class="niche-buttons" id="niches"></div>
+      <p class="niche-hint">Te abrira WhatsApp para que pruebes el sistema como si fueras un cliente</p>
+    </div>
+  </section>
+
+  <!-- ===== FAQ ===== -->
+  <section class="section">
+    <div class="section-inner">
+      <p class="section-label">Preguntas frecuentes</p>
+      <h2 class="section-title">Dudas comunes</h2>
+
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Necesito cambiar mi numero de WhatsApp?</span>
+            <svg class="faq-chevron" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M4.427 5.427a.75.75 0 011.146 0L8 7.854l2.427-2.427a.75.75 0 111.146.966l-3 3a.75.75 0 01-1.146 0l-3-3a.75.75 0 010-.966z"/></svg>
+          </button>
+          <div class="faq-answer">No. AgendaFlow se conecta a tu numero de WhatsApp Business actual. No necesitas una linea nueva.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Mis clientes tienen que descargar algo?</span>
+            <svg class="faq-chevron" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M4.427 5.427a.75.75 0 011.146 0L8 7.854l2.427-2.427a.75.75 0 111.146.966l-3 3a.75.75 0 01-1.146 0l-3-3a.75.75 0 010-.966z"/></svg>
+          </button>
+          <div class="faq-answer">No. Todo pasa dentro de WhatsApp. Tus clientes te escriben como siempre y el asistente los atiende en la misma conversacion. Sin apps, sin links, sin paginas externas.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Puedo seguir respondiendo manualmente cuando quiera?</span>
+            <svg class="faq-chevron" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M4.427 5.427a.75.75 0 011.146 0L8 7.854l2.427-2.427a.75.75 0 111.146.966l-3 3a.75.75 0 01-1.146 0l-3-3a.75.75 0 010-.966z"/></svg>
+          </button>
+          <div class="faq-answer">Si. El asistente trabaja cuando tu no puedes. Si quieres tomar una conversacion manualmente, puedes hacerlo en cualquier momento. Tu tienes el control.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Cuanto tiempo tarda la configuracion?</span>
+            <svg class="faq-chevron" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M4.427 5.427a.75.75 0 011.146 0L8 7.854l2.427-2.427a.75.75 0 111.146.966l-3 3a.75.75 0 01-1.146 0l-3-3a.75.75 0 010-.966z"/></svg>
+          </button>
+          <div class="faq-answer">La configuracion inicial toma menos de 15 minutos. Conectas tu WhatsApp Business, defines tus servicios, horarios y duraciones. Nosotros te acompanamos en el proceso.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Funciona para mi tipo de negocio?</span>
+            <svg class="faq-chevron" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M4.427 5.427a.75.75 0 011.146 0L8 7.854l2.427-2.427a.75.75 0 111.146.966l-3 3a.75.75 0 01-1.146 0l-3-3a.75.75 0 010-.966z"/></svg>
+          </button>
+          <div class="faq-answer">AgendaFlow funciona para cualquier negocio que maneje citas: consultorios medicos, barberias, salones de belleza, dentistas, nutriologos, psicologos, veterinarias, spas y mas. Si tus clientes te escriben por WhatsApp para agendar, es para ti.</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Cuanto cuesta?</span>
+            <svg class="faq-chevron" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M4.427 5.427a.75.75 0 011.146 0L8 7.854l2.427-2.427a.75.75 0 111.146.966l-3 3a.75.75 0 01-1.146 0l-3-3a.75.75 0 010-.966z"/></svg>
+          </button>
+          <div class="faq-answer">Prueba el demo primero para que veas como funciona. En WhatsApp te compartimos los planes y precios disponibles para Mexico.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FINAL CTA ===== -->
+  <section class="section final-cta">
+    <div class="section-inner">
+      <h2>Deja de perder citas por no contestar</h2>
+      <p>Prueba el demo en WhatsApp. Sin costo, sin registro, en 1 minuto ves como funciona.</p>
+      <a href="#prueba" class="hero-cta">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Probar demo en WhatsApp
+      </a>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <p>&copy; 2026 AgendaFlow. Hecho en Mexico.</p>
+  </footer>
+
+  <!-- ===== FLOATING CTA (MOBILE) ===== -->
+  <div class="floating-cta" id="floatingCta">
+    <a href="#prueba">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Probar demo gratis
+    </a>
+  </div>
+
+  <script>
+    // ===== WhatsApp SVG icon =====
+    var WA_ICON = '<svg width="20" height="20" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>';
+
+    // ===== NICHE CONFIGURATION =====
+    var NICHES = [
+      {
+        emoji: "🩺",
+        label: "Soy Doctor",
+        whatsapp_link: "https://wa.me/5216145993425?text=Hola%2C%20soy%20doctor%20y%20quiero%20probar%20el%20demo",
+        ga_event_label: "doctor",
+        color: "#2D9CDB"
+      },
+      {
+        emoji: "💈",
+        label: "Soy Barbero",
+        whatsapp_link: "https://wa.me/5216145993425?text=Hola%2C%20soy%20barbero%20y%20quiero%20probar%20el%20demo",
+        ga_event_label: "barbero",
+        color: "#E67E22"
+      },
+      {
+        emoji: "🦷",
+        label: "Soy Dentista",
+        whatsapp_link: "https://wa.me/5216145993425?text=Hola%2C%20soy%20dentista%20y%20quiero%20probar%20el%20demo",
+        ga_event_label: "dentista",
+        color: "#00BCD4"
+      },
+      {
+        emoji: "💇‍♀️",
+        label: "Salon de Belleza",
+        whatsapp_link: "https://wa.me/5216145993425?text=Hola%2C%20tengo%20un%20salon%20de%20belleza%20y%20quiero%20probar%20el%20demo",
+        ga_event_label: "salon",
+        color: "#E91E63"
+      },
+      {
+        emoji: "🥗",
+        label: "Soy Nutriologo",
+        whatsapp_link: "https://wa.me/5216145993425?text=Hola%2C%20soy%20nutriologo%20y%20quiero%20probar%20el%20demo",
+        ga_event_label: "nutriologo",
+        color: "#4CAF50"
+      },
+      {
+        emoji: "💼",
+        label: "Otro negocio con citas",
+        whatsapp_link: "https://wa.me/5216145993425?text=Hola%2C%20quiero%20probar%20el%20demo%20de%20AgendaFlow",
+        ga_event_label: "otro",
+        color: "#6C63FF"
+      }
+    ];
+
+    // Render niche buttons
+    var container = document.getElementById('niches');
+    NICHES.forEach(function(niche) {
+      var a = document.createElement('a');
+      a.href = niche.whatsapp_link;
+      a.target = '_blank';
+      a.rel = 'noopener';
+      a.className = 'niche-btn';
+      a.style.background = niche.color;
+      a.innerHTML = niche.emoji + ' ' + niche.label + ' <span class="arrow">&rarr;</span> ' + WA_ICON;
+      a.addEventListener('click', function() {
+        if (typeof gtag === 'function') {
+          gtag('event', 'whatsapp_click', {
+            event_category: 'engagement',
+            event_label: niche.ga_event_label
+          });
+        }
+        if (typeof fbq === 'function') {
+          fbq('track', 'Lead', { content_name: niche.ga_event_label });
+        }
+      });
+      container.appendChild(a);
+    });
+
+    // ===== FAQ TOGGLE =====
+    document.querySelectorAll('.faq-question').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var item = this.parentElement;
+        var wasOpen = item.classList.contains('open');
+        // Close all
+        document.querySelectorAll('.faq-item').forEach(function(el) {
+          el.classList.remove('open');
+        });
+        // Toggle current
+        if (!wasOpen) item.classList.add('open');
+      });
+    });
+
+    // ===== FLOATING CTA (show after scrolling past hero) =====
+    var floatingCta = document.getElementById('floatingCta');
+    var heroSection = document.getElementById('hero');
+
+    function checkScroll() {
+      var heroBottom = heroSection.getBoundingClientRect().bottom;
+      if (heroBottom < 0) {
+        floatingCta.classList.add('visible');
+        document.body.classList.add('has-floating-cta');
+      } else {
+        floatingCta.classList.remove('visible');
+        document.body.classList.remove('has-floating-cta');
+      }
+    }
+
+    window.addEventListener('scroll', checkScroll, { passive: true });
+    checkScroll();
+  </script>
+</body>
+</html>
