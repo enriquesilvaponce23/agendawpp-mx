@@ -14,7 +14,15 @@ Diferenciadores clave:
 
 ## Mercado objetivo
 
-Mexico. Subdominio: agendawpp.mx. Cualquier profesional que venda su tiempo (doctores, dentistas, barberos, salones, nutriólogos, psicólogos, veterinarias, spas, consultores, etc.)
+Mexico. Dominio: agendaflow.bloomautomations.com. Cualquier profesional que venda su tiempo (doctores, dentistas, barberos, salones, nutriólogos, psicólogos, veterinarias, spas, consultores, etc.)
+
+## Deploy
+
+- **Repo:** github.com/enriquesilvaponce23/agendawpp-mx (branch: main)
+- **Hosting:** Easypanel en VPS Hostinger (93.188.165.30:3000)
+- **Dominio:** agendaflow.bloomautomations.com (DNS A record → 93.188.165.30)
+- **Docker:** Nginx Alpine sirviendo archivos estáticos (puerto 80)
+- **Deploy manual:** push a main → click "Implementar" en Easypanel
 
 ## Estructura del proyecto
 
